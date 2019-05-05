@@ -1,4 +1,5 @@
-
+import os
+import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -71,7 +72,6 @@ class Restock(models.Model):
 		verbose_name_plural = 'Restock'
 
 	def save(self, *args, **kwargs):
-
 		if not self.pk:			
 			stock = Product.objects.get(pk=self.product_id)
 			stock_available = stock.stock_level
