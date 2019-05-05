@@ -58,7 +58,7 @@ class Product(models.Model):
 
 
 class Restock(models.Model):
-	product = models.OneToOneField(Product, on_delete=models.CASCADE)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	supplier = models.CharField(_('Supplier'), max_length=255, blank=False, null=False, default=None)
 	buying_price = models.FloatField(_('Buying Price'), blank=False, null=False, default=None)
 	selling_price = models.FloatField(_('Selling Price'), blank=False, null=False, default=None)
@@ -70,6 +70,15 @@ class Restock(models.Model):
 		verbose_name = 'Restock'
 		verbose_name_plural = 'Restock'
 
+	def save(self, *args, **kwargs):
+
+		if not self.pk:			
+			stock = Product.objects.get(pk=self.product_id)
+			stock_available = stock.stock_level
+			new_stock = self.units_bought + stock_available
+			Product.objects.filter(pk=self.product_id).update(stock_level=new_stock)
+		super().save(*args, **kwargs)
+
 	def __str__(self):
-		restock_name = self.product
+		restock_name = self.product.product_name
 		return restock_name
