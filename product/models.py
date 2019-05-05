@@ -23,7 +23,7 @@ def product_feature_image_name(instance, filename):
 	return os.path.join('product_featued_image', filename)
 
 class Category(models.Model):
-	category_name = models.CharField(_('Name'), max_length=255, unique=True, null=False, blank=False)
+	category_name = models.CharField(_('Name'), max_length=255, blank=False, null=False, unique=True)
 	description = models.TextField(_('Description'), blank=True, null=True)
 	image = models.ImageField(_('Featured Image - 100px x 100 px'), upload_to=category_feature_image_name, blank=True, null=True)
 	created_on = models.DateTimeField(_('Created On'), auto_now_add=True)	
@@ -38,14 +38,14 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-	product_name = models.CharField(_('Name'), max_length=255, unique=True, blank=False, null=False)
+	product_name = models.CharField(_('Name'), max_length=255, blank=False, null=False,  unique=True)
 	category = models.OneToOneField(Category, on_delete=models.CASCADE)
-	brand = models.CharField(_('Brand'), max_length=255, unique=False, blank=False, null=False)
-	size = models.CharField(_('size'), max_length=255, unique=False, blank=False, null=False)
-	color = models.CharField(_('Color'), max_length=255, unique=False, blank=True, null=True)
+	brand = models.CharField(_('Brand'), max_length=255, blank=False, null=False, unique=False)
+	size = models.CharField(_('size'), max_length=255, blank=False, null=False, unique=False)
+	color = models.CharField(_('Color'), max_length=255, blank=False, null=False, unique=False)
 	description = models.TextField(_('Description'), blank=True, null=True)
 	image = models.ImageField(_('Featured Image - 100px x 100 px'), upload_to=product_feature_image_name, blank=True, null=True)
-
+	stock_level = models.IntegerField(_('Stock Level'), blank=True, default = 0, null=True)
 	created_on = models.DateTimeField(_('Created On'), auto_now_add=True)
 	updated_on = models.DateTimeField(_('Updated On'), auto_now=True)
 
@@ -55,3 +55,5 @@ class Product(models.Model):
 
 	def __str__(self):
 		return self.product_name
+
+
