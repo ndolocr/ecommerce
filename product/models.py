@@ -57,3 +57,19 @@ class Product(models.Model):
 		return self.product_name
 
 
+class Restock(models.Model):
+	product = models.OneToOneField(Product, on_delete=models.CASCADE)
+	supplier = models.CharField(_('Supplier'), max_length=255, blank=False, null=False, default=None)
+	buying_price = models.FloatField(_('Buying Price'), blank=False, null=False, default=None)
+	selling_price = models.FloatField(_('Selling Price'), blank=False, null=False, default=None)
+	units_bought = models.IntegerField(_('Units Purchased'), blank=False, null=False, default=None)
+	created_on = models.DateTimeField(_('Created On'), auto_now_add=True)
+	updated_on = models.DateTimeField(_('Updated On'), auto_now=True)
+
+	class Meta:
+		verbose_name = 'Restock'
+		verbose_name_plural = 'Restock'
+
+	def __str__(self):
+		restock_name = self.product
+		return restock_name
